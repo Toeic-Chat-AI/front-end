@@ -1,11 +1,24 @@
 import { useState } from "react";
 import { TextField, Button } from "@mui/material";
+import { MessageType } from "react-chat-elements";
 
-export const ChatInput = () => {
+type ChatInputProps = {
+  onSend: (newMessage: MessageType) => void;
+};
+
+export const ChatInput = ({ onSend }: ChatInputProps) => {
   const [message, setMessage] = useState("");
 
   const sendMessage = async () => {
-    console.log("send");
+    if (message === "") return;
+    const newMessage = {
+      position: "right",
+      type: "text",
+      title: "You",
+      text: message
+    } as MessageType;
+
+    onSend(newMessage);
   };
 
   return (

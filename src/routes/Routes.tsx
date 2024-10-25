@@ -7,26 +7,17 @@ import {
 } from "react-router-dom";
 import { RequiredAuth } from "../components/RequireAuth";
 import { LoginPage } from "../components/Login";
-import ChatBox from "../components/ChatBox/ChatBox";
-import { ChatHistory } from "../components/ChatHistory/ChatHistory";
-import { User } from "../components/UserBlock/User";
+import { Chat } from "../pages/chat";
+import { RegisterPage } from "../components/Register";
 
 export const Routes = (): JSX.Element => {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-        <Route path="login" element={<LoginPage />}></Route>
+        <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />
         <Route element={<RequiredAuth />}>
-          <Route
-            path="chat"
-            element={
-              <div className="flex w-screen relative">
-                <User />
-                <ChatHistory />
-                <ChatBox />
-              </div>
-            }
-          ></Route>
+          <Route path="chat" element={<Chat />} />
         </Route>
       </>
     )

@@ -8,10 +8,7 @@ export const getMessageById = ({ id }: { id: string }) => {
   return MessageById;
 };
 
-export const postMessageById = ({ _id, message, sender }: ChatMessage) => {
-  const data = {
-    message,
-    sender
-  };
-  return axiosClient.post(`${API_MESSAGE}/${_id}`, data);
+export const postMessageById = ({}: ChatMessage) => {
+  const data = {};
+  // return axiosClient.post(`${API_MESSAGE}/${_id}`, data);
 };

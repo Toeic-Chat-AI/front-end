@@ -1,10 +1,7 @@
-export type ChatMessage = {
-  _id: string;
-  message: string;
-  sender: string;
-  createAt: string;
-};
+import { ITextMessageProps } from "react-chat-elements";
 
-export type ChatMessagePayload = {
-    
-}
+export type ChatMessage = { type: "text" } & ITextMessageProps & {
+    id?: string;
+  };
+
+export type ChatMessagePayload = {};
