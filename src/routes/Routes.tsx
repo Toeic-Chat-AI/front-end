@@ -18,6 +18,7 @@ export const Routes = (): JSX.Element => {
         <Route path="register" element={<RegisterPage />} />
         <Route element={<RequiredAuth />}>
           <Route path="chat" element={<Chat />} />
+          <Route path="chat/:chatId" element={<Chat />} />
         </Route>
       </>
     )

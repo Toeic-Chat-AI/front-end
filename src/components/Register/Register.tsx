@@ -18,17 +18,18 @@ export const RegisterPage = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data: Register) => {
-    await userRegister(data);
-    toast.success("Register success");
-    navigate("/login");
-  };
-
-  const onError = (error: any) => {
-    toast.error("Register failed");
+    try {
+      await userRegister(data);
+      toast.success("Register success");
+      navigate("/login");
+    } catch (err) {
+      toast.error("Register failed");
+      console.error(err);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit, onError)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="w-1/3 fixed top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2">
         <div className="bg-slate-200">
           <div className="flex-1 flex flex-col gap-4 p-8">

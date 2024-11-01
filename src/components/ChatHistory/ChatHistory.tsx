@@ -1,21 +1,61 @@
-import { useState, useEffect } from "react";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
+import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { ChatHistories } from "../../types";
+import { useGetChatHistoryByUserID } from "../../hooks/useChatHistory";
+import { CustomLoading } from "../Loading/Loading";
+import { HistoryItem } from "./HistoryItem";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export const ChatHistory = () => {
-  const [Histories, setHistories] = useState<ChatHistories>([]);
-  
+type ChatHistoryProps = {};
+
+export const ChatHistory = ({}: ChatHistoryProps) => {
+  const navigate = useNavigate();
+  const { data: chatHistories, isLoading } = useGetChatHistoryByUserID();
+  const [openChatHistory, setOpenChatHistory] = useState(true);
+
+  const handleToggleChatHistory = () => {
+    setOpenChatHistory(!openChatHistory);
+  };
+
+  if (isLoading) return <CustomLoading />;
+
   return (
-    <div className="bg-slate-800 text-white h-screen w-1/6 flex flex-col gap-4">
-      <div className="flex gap-4 items-center w-full justify-between p-6">
-        <ArrowCircleLeftIcon />
-        <div>Chat Toeic</div>
-        <AddCircleIcon />
+    <>
+      <div
+        className={`bg-slate-800 text-white h-screen w-1/6 flex flex-col gap-4 transition-all duration-200 ${
+          !openChatHistory && "hidden"
+        }`}
+      >
+        <div className="flex gap-4 items-center w-full justify-between p-6">
+          <div
+            className="hover:cursor-pointer hover:brightness-105"
+            onClick={handleToggleChatHistory}
+          >
+            <ArrowCircleLeftIcon />
+          </div>
+          <div>Chat Toeic</div>
+          <div
+            className="hover:cursor-pointer hover:brightness-105"
+            onClick={() => navigate("/chat")}
+          >
+            <AddCircleIcon />
+          </div>
+        </div>
+        <div className="overflow-y-scroll h-full custom-scrollbar">
+          {chatHistories?.map((chatHistoryItem) => (
+            <HistoryItem key={chatHistoryItem._id} id={chatHistoryItem._id} />
+          ))}
+        </div>
       </div>
-      <div className="overflow-y-scroll h-full">
-
+      <div className={`${openChatHistory && "hidden"} h-screen`}>
+        <div
+          className="hover:cursor-pointer hover:brightness-105 m-5"
+          onClick={handleToggleChatHistory}
+        >
+          <ArrowCircleRightIcon />
+        </div>
       </div>
-    </div>
+    </>
   );
 };

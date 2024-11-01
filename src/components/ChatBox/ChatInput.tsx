@@ -1,30 +1,38 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { TextField, Button } from "@mui/material";
-import { MessageType } from "react-chat-elements";
+import { useParams } from "react-router-dom";
+import { ChatMessage } from "../../types";
+import { postChatMessage } from "../../services/apiChatMessages";
+import { useGetChatMessagesByChatHistory } from "../../hooks/useChatMessages";
 
-type ChatInputProps = {
-  onSend: (newMessage: MessageType) => void;
+export type MessageInputRef = {
+  focusInput: () => void;
 };
 
-export const ChatInput = ({ onSend }: ChatInputProps) => {
+export const ChatInput = () => {
   const [message, setMessage] = useState("");
+  const messageInputRef = useRef<HTMLDivElement>(null);
+  const { chatId } = useParams();
+  const { refetch } = useGetChatMessagesByChatHistory();
 
   const sendMessage = async () => {
-    if (message === "") return;
     const newMessage = {
       position: "right",
       type: "text",
       title: "You",
       text: message
-    } as MessageType;
-
-    onSend(newMessage);
+    } as ChatMessage;
+    const isNewChatHistory = !chatId;
+    await postChatMessage(newMessage, isNewChatHistory);
+    refetch();
   };
 
   return (
     <form className="absolute bottom-0 right-0 left-0" onSubmit={sendMessage}>
       <div className="p-4 items-center flex gap-4 w-full justify-center">
         <TextField
+          id="message-input"
+          ref={messageInputRef}
           className="w-1/2"
           variant="outlined"
           size="small"
@@ -33,7 +41,7 @@ export const ChatInput = ({ onSend }: ChatInputProps) => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <Button type="submit" variant="contained">
+        <Button type="submit" variant="contained" disabled={!message}>
           Send
         </Button>
       </div>

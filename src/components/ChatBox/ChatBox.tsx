@@ -1,23 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { ChatInput } from "./ChatInput";
-import { MessageList, MessageType } from "react-chat-elements";
-
-const clearRef = () => {};
+import { MessageList } from "react-chat-elements";
+import { useGetChatMessagesByChatHistory } from "../../hooks/useChatMessages";
+import { CustomLoading } from "../Loading/Loading";
 
 const ChatBox = () => {
-  const [messages, setMessages] = useState<MessageType[]>([]);
-  const messageListRef = useRef<HTMLDivElement>(null);
+  const messageListRef = useRef(null);
+  const {
+    data: messages,
+    isLoading,
+    isRefetching
+  } = useGetChatMessagesByChatHistory();
 
-  const addMessage = (newMessage: MessageType) => {
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
-    clearRef();
-  };
-
-  useEffect(() => {
-    return () => {
-      console.log("dismount");
-    };
-  }, []);
+  if (isLoading || isRefetching) return <CustomLoading />;
 
   return (
     <div className="relative w-[70vw] flex flex-col items-center">
@@ -27,12 +22,12 @@ const ChatBox = () => {
       <MessageList
         className="message-list"
         toBottomHeight={"100%"}
-        referance={null}
+        referance={messageListRef}
         lockable
-        dataSource={messages}
+        dataSource={messages || []}
         sendMessagePreview={true}
       />
-      <ChatInput onSend={addMessage} />
+      <ChatInput />
     </div>
   );
 };

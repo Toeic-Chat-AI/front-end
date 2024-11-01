@@ -1,21 +1,26 @@
 import axios from "axios";
+import { getCookie } from "../helpers";
+
+const baseURL = process.env.REACT_APP_API_URL;
 
 // Create an Axios instance
 const axiosClient = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL,
   timeout: 5000,
   headers: {
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": baseURL
+    // "Access-Control-Allow-Headers": "Content-Type"
   }
 });
 
 // Request Interceptor
 axiosClient.interceptors.request.use(
   (config) => {
-    // const token = localStorage.getItem("token");
-    // if (token) {
-    //   config.headers["Authorization"] = `Bearer ${token}`;
-    // }
+    const token = getCookie("token");
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
     return config;
   },
   (error) => {
@@ -29,11 +34,7 @@ axiosClient.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response) {
-      console.error("Error Response:", error.response);
-    } else {
-      console.error("Error:", error.message);
-    }
+    console.error(error);
     return Promise.reject(error);
   }
 );
