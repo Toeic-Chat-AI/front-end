@@ -6,12 +6,14 @@ import { CustomLoading } from "../Loading/Loading";
 import { HistoryItem } from "./HistoryItem";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useGlobalStorage } from "../../contexts/Storage";
 
-type ChatHistoryProps = {};
-
-export const ChatHistory = ({}: ChatHistoryProps) => {
+export const ChatHistory = () => {
   const navigate = useNavigate();
-  const { data: chatHistories, isLoading } = useGetChatHistoryByUserID();
+  const { user } = useGlobalStorage();
+  const { data: chatHistories, isLoading } = useGetChatHistoryByUserID(
+    user?.id
+  );
   const [openChatHistory, setOpenChatHistory] = useState(true);
 
   const handleToggleChatHistory = () => {
@@ -44,7 +46,7 @@ export const ChatHistory = ({}: ChatHistoryProps) => {
         </div>
         <div className="overflow-y-scroll h-full custom-scrollbar">
           {chatHistories?.map((chatHistoryItem) => (
-            <HistoryItem key={chatHistoryItem._id} id={chatHistoryItem._id} />
+            <HistoryItem key={chatHistoryItem._id} item={chatHistoryItem} />
           ))}
         </div>
       </div>

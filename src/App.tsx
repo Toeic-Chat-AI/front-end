@@ -1,15 +1,21 @@
-import React from "react";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { Routes } from "./routes/Routes";
+import { useGetUserProfile } from "./hooks/useUserProfile";
+import { CustomLoading } from "./components/Loading/Loading";
+import { useGlobalStorage } from "./contexts/Storage";
 
-const queryClient = new QueryClient();
+const App = () => {
+  const { data, isLoading } = useGetUserProfile();
+  const { setUser } = useGlobalStorage();
 
-const App: React.FC = () => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Routes />
-    </QueryClientProvider>
-  );
+  useEffect(() => {
+    if (data) setUser(data);
+    // eslint-disable-next-line
+  }, [data]);
+
+  if (isLoading) return <CustomLoading />;
+
+  return <Routes />;
 };
 
 export default App;

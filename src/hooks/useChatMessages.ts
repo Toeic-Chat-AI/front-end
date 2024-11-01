@@ -3,15 +3,15 @@ import { EQuerryKeys } from "../constants/EQuerryKeys";
 import { ChatMessage } from "../types";
 import { getChatMessagesByChatHistory } from "../services/apiChatMessages";
 
-export function useGetChatMessagesByChatHistory(id?: string) {
+export function useGetChatMessagesByChatHistory(chatId?: string) {
   const { data, error, isLoading, refetch, isRefetching } = useQuery<
     ChatMessage[]
   >({
-    queryKey: [EQuerryKeys.CHAT_MESSAGE, id],
-    queryFn: () => getChatMessagesByChatHistory(id),
+    queryKey: [EQuerryKeys.CHAT_MESSAGE, chatId],
+    queryFn: () => getChatMessagesByChatHistory(chatId),
     ...{
       refetchOnWindowFocus: true,
-      enabled: !!id
+      enabled: !!chatId
     }
   });
 

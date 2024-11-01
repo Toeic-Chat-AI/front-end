@@ -5,14 +5,13 @@ import {
   getChatHistoryByUserId
 } from "../services/apiChatHistory";
 import { ChatHistories, ChatHistory } from "../types";
-import { useGlobalStorage } from "../contexts/Storage";
 
 export function useGetChatHistory(id?: string) {
   const { data, error, isLoading } = useQuery<ChatHistory>({
     queryKey: [EQuerryKeys.CHAT_HISTORY, id],
     queryFn: () => getChatHistoryById(id),
     ...{
-      refetchOnWindowFocus: true,
+      refetchOnWindowFocus: false,
       enabled: !!id
     }
   });
@@ -20,14 +19,13 @@ export function useGetChatHistory(id?: string) {
   return { data, error, isLoading };
 }
 
-export function useGetChatHistoryByUserID() {
-  const { user } = useGlobalStorage();
+export function useGetChatHistoryByUserID(userId: string | undefined) {
   const { data, error, isLoading } = useQuery<ChatHistories>({
-    queryKey: [EQuerryKeys.CHAT_HISTORY_BY_USER],
+    queryKey: [EQuerryKeys.CHAT_HISTORY_BY_USER, userId],
     queryFn: () => getChatHistoryByUserId(),
     ...{
-      refetchOnWindowFocus: true,
-      enabled: !!user?.id
+      refetchOnWindowFocus: false,
+      enabled: !!userId
     }
   });
 

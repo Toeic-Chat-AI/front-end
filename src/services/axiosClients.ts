@@ -1,7 +1,8 @@
 import axios from "axios";
 import { getCookie } from "../helpers";
 
-const baseURL = process.env.REACT_APP_API_URL;
+// const baseURL = process.env.REACT_APP_API_URL;
+const baseURL = "http://localhost:8080/api";
 
 // Create an Axios instance
 const axiosClient = axios.create({
@@ -24,6 +25,7 @@ axiosClient.interceptors.request.use(
     return config;
   },
   (error) => {
+    console.error(error);
     return Promise.reject(error);
   }
 );

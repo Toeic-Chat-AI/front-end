@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { userLogin } from "../../services/authUser";
 import { setCookie } from "../../helpers";
 import { toast } from "react-toastify";
+import { useGlobalStorage } from "../../contexts/Storage";
 
 const TITLE_CLASSNAME = "font-bold text-xl text-black";
 
@@ -13,15 +14,18 @@ type Login = {
 };
 
 export const LoginPage = () => {
+  const { setUser } = useGlobalStorage();
   const { register, handleSubmit } = useForm<Login>();
   const navigate = useNavigate();
 
   const onSubmit = async (data: Login) => {
     try {
       const userLoginData = await userLogin(data);
-      console.log(userLoginData);
+
       if (userLoginData) {
+        setUser(userLoginData.user);
         setCookie("token", userLoginData.token);
+        setCookie("userId", userLoginData.user.id);
         navigate("/chat");
       }
     } catch (err) {

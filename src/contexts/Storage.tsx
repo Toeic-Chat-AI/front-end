@@ -5,7 +5,8 @@ import {
   ReactNode,
   Dispatch,
   SetStateAction,
-  FC
+  FC,
+  useEffect
 } from "react";
 import { User } from "../types";
 
@@ -24,6 +25,10 @@ const GlobalContext = createContext<GlobalState | undefined>(undefined);
 const GlobalProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User>();
   const [isLogged, setIsLogged] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsLogged(!!user?.id);
+  }, [user?.id]);
 
   const storageValue = {
     user,

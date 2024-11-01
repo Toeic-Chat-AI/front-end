@@ -3,24 +3,19 @@ import { ChatInput } from "./ChatInput";
 import { MessageList } from "react-chat-elements";
 import { useGetChatMessagesByChatHistory } from "../../hooks/useChatMessages";
 import { CustomLoading } from "../Loading/Loading";
+import { useParams } from "react-router-dom";
 
 const ChatBox = () => {
   const messageListRef = useRef(null);
-  const {
-    data: messages,
-    isLoading,
-    isRefetching
-  } = useGetChatMessagesByChatHistory();
+  const { chatId } = useParams();
+  const { data: messages, isLoading } = useGetChatMessagesByChatHistory(chatId);
 
-  if (isLoading || isRefetching) return <CustomLoading />;
+  if (isLoading) return <CustomLoading />;
 
   return (
-    <div className="relative w-[70vw] flex flex-col items-center">
-      <div className="m-4 text-2xl font-bold text-slate-500 self-start">
-        Chat Toeic
-      </div>
+    <div className="relative w-3/4 flex flex-col items-center justify-between h-full">
       <MessageList
-        className="message-list"
+        className="message-list w-full"
         toBottomHeight={"100%"}
         referance={messageListRef}
         lockable

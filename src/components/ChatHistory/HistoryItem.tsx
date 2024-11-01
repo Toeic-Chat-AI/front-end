@@ -1,15 +1,38 @@
-import { useGetChatHistory } from "../../hooks/useChatHistory";
-import { CustomLoading } from "../Loading/Loading";
+import { useParams, useNavigate } from "react-router-dom";
+import { ChatHistory } from "../../types";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import { useState } from "react";
 
-export const HistoryItem = ({ id }: { id: string }) => {
-  const { data, error, isLoading } = useGetChatHistory(id);
+const getActiveClassName = (isActive: boolean) =>
+  `${isActive ? "bg-slate-700" : "bg-slate-800"}`;
 
-  if (isLoading) return <CustomLoading />;
-  if (error) return <div>Error: {error.message}</div>;
+export const HistoryItem = ({ item }: { item: ChatHistory }) => {
+  const [openMenu, setOpenMenu] = useState(false);
+  const [openOptionModal, setOpenOptionModal] = useState(false);
+  const navigate = useNavigate();
+  const { chatId } = useParams();
+  const isActive = chatId === item._id;
+
+  const handleNavigateToChat = async () => {
+    navigate(`/chat/${item._id}`);
+  };
 
   return (
-    <div className="p-4">
-      <div className="text-xl font-bold">{data?.title}</div>
+    <div
+      className={`${getActiveClassName(
+        isActive
+      )} hover:cursor-pointer hover:bg-slate-700 rounded-md py-2 px-3 mx-2 flex justify-between items-center`}
+      onClick={handleNavigateToChat}
+      onMouseOver={() => setOpenMenu(true)}
+      onMouseLeave={() => setOpenMenu(false)}
+    >
+      <div className="text-sm">{item?.title}</div>
+      {openMenu && (
+        <MoreHorizIcon
+          fontSize="small"
+          onClick={() => setOpenOptionModal(true)}
+        />
+      )}
     </div>
   );
 };

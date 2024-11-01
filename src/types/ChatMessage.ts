@@ -4,4 +4,7 @@ export type ChatMessage = { type: "text" } & ITextMessageProps & {
     id?: string;
   };
 
-export type ChatMessagePayload = {};
+export type ChatMessagePayload = {
+  chatHistoryId?: string;
+  message: ChatMessage;
+};

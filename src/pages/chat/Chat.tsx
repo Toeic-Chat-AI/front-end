@@ -4,10 +4,12 @@ import { User } from "../../components/UserBlock/User";
 
 export const Chat = (): JSX.Element => {
   return (
-    <div className="flex w-screen relative">
-      <User />
+    <div className="flex w-screen h-screen">
       <ChatHistory />
-      <ChatBox />
+      <div className="flex-1 flex flex-col items-center">
+        <User />
+        <ChatBox />
+      </div>
     </div>
   );
 };

@@ -1,3 +1,5 @@
+import { UserProfile } from "./UserProfile";
+
 export type UserLoginPayload = {
   username: string;
   password: string;
@@ -6,12 +8,7 @@ export type UserLoginPayload = {
 export type UserLoginResponse = {
   message: string;
   token: string;
-  user: {
-    email: string;
-    fullName: string;
-    username: string;
-    id: string;
-  };
+  user: UserProfile
 };
 
 export type UserRegisterPayload = {

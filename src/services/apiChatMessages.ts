@@ -1,4 +1,4 @@
-import { ChatMessage } from "../types";
+import { ChatMessagePayload, ChatMessage } from "../types";
 import axiosClient from "./axiosClients";
 
 const API_CHAT_MESSAGE = "/messages";
@@ -9,13 +9,8 @@ export const getChatMessagesByChatHistory = async (id?: string) => {
 };
 
 export const postChatMessage = async (
-  data: ChatMessage,
-  isNewChatHistory = false
-) => {
-  const response = await axiosClient.post(API_CHAT_MESSAGE, data, {
-    params: {
-      isNewChatHistory
-    }
-  });
+  data: ChatMessagePayload
+): Promise<ChatMessagePayload> => {
+  const response = await axiosClient.post(API_CHAT_MESSAGE, data);
   return response.data;
 };
