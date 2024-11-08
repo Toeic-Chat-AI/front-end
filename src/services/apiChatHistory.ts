@@ -12,3 +12,16 @@ export const getChatHistoryByUserId = async () => {
   const { data } = await axiosClient.get(`${API_CHAT_HISTORY}`);
   return data as ChatHistories;
 };
+
+export const updateChatHistory = async (id: string, title: string) => {
+  const { data } = await axiosClient.put(`${API_CHAT_HISTORY}/${id}`, {
+    data: { title }
+  });
+  console.log(data);
+  return data as ChatHistory;
+};
+
+export const deleteChatHistory = async (id: string) => {
+  const response = await axiosClient.delete(`${API_CHAT_HISTORY}/${id}`);
+  return response.status === 200;
+};

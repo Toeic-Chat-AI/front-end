@@ -25,7 +25,7 @@ export const User = () => {
           <Avatar />
         </div>
         {toggleUser && (
-          <div className="flex flex-col gap-1 rounded-md relative right-12 bg-slate-700 text-white">
+          <div className="flex flex-col gap-1 rounded-md absolute right-12 bg-slate-700 text-white">
             <div
               className="hover:cursor-pointer hover:bg-opacity-90 py-2 px-4 text-center"
               onClick={handleLogout}

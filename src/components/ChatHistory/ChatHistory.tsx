@@ -44,7 +44,7 @@ export const ChatHistory = () => {
             <AddCircleIcon />
           </div>
         </div>
-        <div className="overflow-y-scroll h-full custom-scrollbar">
+        <div className="overflow-y-scroll h-full custom-scrollbar overflow-x-hidden">
           {chatHistories?.map((chatHistoryItem) => (
             <HistoryItem key={chatHistoryItem._id} item={chatHistoryItem} />
           ))}

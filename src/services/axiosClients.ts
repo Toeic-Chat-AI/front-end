@@ -1,8 +1,8 @@
 import axios from "axios";
 import { getCookie } from "../helpers";
 
-const baseURL = process.env.REACT_APP_API_URL;
-// const baseURL = "http://localhost:8080/api";
+// const baseURL = process.env.REACT_APP_API_URL;
+const baseURL = "http://localhost:8080/api";
 
 // Create an Axios instance
 const axiosClient = axios.create({
