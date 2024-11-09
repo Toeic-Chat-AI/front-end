@@ -1,4 +1,4 @@
-import { ChatHistories, ChatHistory } from "../types";
+import { ChatHistoryResponse, ChatHistory } from "../types";
 import axiosClient from "./axiosClients";
 
 const API_CHAT_HISTORY = "/chat-history";
@@ -10,7 +10,7 @@ export const getChatHistoryById = async (id?: string) => {
 
 export const getChatHistoryByUserId = async () => {
   const { data } = await axiosClient.get(`${API_CHAT_HISTORY}`);
-  return data as ChatHistories;
+  return data as ChatHistoryResponse;
 };
 
 export const updateChatHistory = async (id: string, title: string) => {

@@ -4,7 +4,7 @@ import {
   getChatHistoryById,
   getChatHistoryByUserId
 } from "../services/apiChatHistory";
-import { ChatHistories, ChatHistory } from "../types";
+import { ChatHistory, ChatHistoryResponse } from "../types";
 
 export function useGetChatHistory(id?: string) {
   const { data, error, isLoading } = useQuery<ChatHistory>({
@@ -20,7 +20,7 @@ export function useGetChatHistory(id?: string) {
 }
 
 export function useGetChatHistoryByUserID(userId: string | undefined) {
-  const { data, error, isLoading } = useQuery<ChatHistories>({
+  const { data, error, isLoading } = useQuery<ChatHistoryResponse>({
     queryKey: [EQuerryKeys.CHAT_HISTORY_BY_USER, userId],
     queryFn: () => getChatHistoryByUserId(),
     ...{

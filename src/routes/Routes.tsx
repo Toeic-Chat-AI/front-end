@@ -10,6 +10,7 @@ import { LoginPage } from "../components/Login";
 import { Chat } from "../pages/chat";
 import { RegisterPage } from "../components/Register";
 import { NotFound } from "../pages/NotFound";
+import ErrorBoundary from "../pages/ErrorBoundary";
 
 export const Routes = (): JSX.Element => {
   const router = createBrowserRouter(
@@ -28,7 +29,9 @@ export const Routes = (): JSX.Element => {
 
   return (
     <>
-      <RouterProvider router={router} />
+      <ErrorBoundary>
+        <RouterProvider router={router} />{" "}
+      </ErrorBoundary>
     </>
   );
 };

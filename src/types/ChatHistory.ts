@@ -9,3 +9,7 @@ export type ChatHistory = {
   title: string;
   createAt: string;
 };
+
+export type ChatHistoryResponse = {
+  chatHistory: ChatHistories;
+};

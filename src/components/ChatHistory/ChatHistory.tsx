@@ -11,16 +11,14 @@ import { useGlobalStorage } from "../../contexts/Storage";
 export const ChatHistory = () => {
   const navigate = useNavigate();
   const { user } = useGlobalStorage();
-  const { data: chatHistories, isLoading } = useGetChatHistoryByUserID(
-    user?.id
-  );
+  const { data: chatHistories, isLoading } = useGetChatHistoryByUserID(user.id);
   const [openChatHistory, setOpenChatHistory] = useState(true);
 
   const handleToggleChatHistory = () => {
     setOpenChatHistory(!openChatHistory);
   };
 
-  if (isLoading) return <CustomLoading />;
+  if (isLoading || !chatHistories) return <CustomLoading />;
 
   return (
     <>
@@ -45,7 +43,7 @@ export const ChatHistory = () => {
           </div>
         </div>
         <div className="overflow-y-scroll h-full custom-scrollbar overflow-x-hidden">
-          {chatHistories?.map((chatHistoryItem) => (
+          {chatHistories.chatHistory.map((chatHistoryItem) => (
             <HistoryItem key={chatHistoryItem._id} item={chatHistoryItem} />
           ))}
         </div>
