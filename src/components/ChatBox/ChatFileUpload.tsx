@@ -1,11 +1,16 @@
 import React, { useState, useCallback, useRef } from "react";
 import { postFile } from "../../services/apiFile";
 import { useParams } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
+import { EQuerryKeys } from "../../constants/EQuerryKeys";
+import { CustomLoading } from "../Loading/Loading";
 
 export const ChatFileUpload = () => {
+  const queryClient = useQueryClient();
   const [dragging, setDragging] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { chatId } = useParams();
 
@@ -21,13 +26,14 @@ export const ChatFileUpload = () => {
     setDragging(false);
   }, []);
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
+  const handleDrop = useCallback(async (e: React.DragEvent) => {
+    setIsLoading(true);
     e.preventDefault();
     e.stopPropagation();
     setDragging(false);
 
     const files = e.dataTransfer.files;
-    if (files.length > 0 && chatId) {
+    if (files.length > 0) {
       const droppedFile = files[0];
       setFile(droppedFile);
 
@@ -39,8 +45,16 @@ export const ChatFileUpload = () => {
       } else {
         setPreview(null);
       }
-      postFile(droppedFile);
+      queryClient.invalidateQueries({
+        queryKey: [EQuerryKeys.CHAT_HISTORY_BY_USER]
+      });
+      queryClient.invalidateQueries({
+        queryKey: [EQuerryKeys.CHAT_HISTORY]
+      });
+      const data = await postFile(droppedFile, chatId);
+      console.log(data);
     }
+    setIsLoading(false);
   }, []);
 
   const handleClick = () => {
@@ -49,7 +63,8 @@ export const ChatFileUpload = () => {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsLoading(true);
     const files = e.target.files;
     if (files && files.length > 0) {
       const selectedFile = files[0];
@@ -63,12 +78,26 @@ export const ChatFileUpload = () => {
       } else {
         setPreview(null);
       }
-      postFile(selectedFile, chatId);
+      queryClient.invalidateQueries({
+        queryKey: [EQuerryKeys.CHAT_HISTORY_BY_USER]
+      });
+      queryClient.invalidateQueries({
+        queryKey: [EQuerryKeys.CHAT_HISTORY]
+      });
+      //
+      const data = await postFile(selectedFile, chatId);
+      console.log(data);
     }
+    setIsLoading(false);
   };
 
   return (
     <>
+      {isLoading && (
+        <div className="fixed inset-0 bg-white bg-opacity-10">
+          <CustomLoading />
+        </div>
+      )}
       <div
         className={`border-gray-100 border-2 h-40 w-40 self-end m-4 border-dashed flex items-center justify-center
           hover:cursor-pointer hover:bg-gray-200 ${

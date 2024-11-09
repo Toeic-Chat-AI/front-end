@@ -9,6 +9,7 @@ import { RequiredAuth } from "../components/RequireAuth";
 import { LoginPage } from "../components/Login";
 import { Chat } from "../pages/chat";
 import { RegisterPage } from "../components/Register";
+import { NotFound } from "../pages/NotFound";
 
 export const Routes = (): JSX.Element => {
   const router = createBrowserRouter(
@@ -20,6 +21,7 @@ export const Routes = (): JSX.Element => {
           <Route path="chat" element={<Chat />} />
           <Route path="chat/:chatId" element={<Chat />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </>
     )
   );

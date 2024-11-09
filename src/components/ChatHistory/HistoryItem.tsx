@@ -99,7 +99,6 @@ export const HistoryItem = ({ item }: { item: ChatHistory }) => {
       ) : (
         <div className="text-sm overflow-hidden text-ellipsis">{title}</div>
       )}
-
       {openMenu && (
         <MoreHorizIcon
           fontSize="small"
