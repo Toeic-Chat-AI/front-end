@@ -2,7 +2,7 @@ import axiosClient from "./axiosClients";
 import { FileResponse } from "../types/File";
 
 const API_FILES = "/files";
-// const API_AI = process.env.REACT_APP_NGROK_URL;
+const API_AI = process.env.REACT_APP_NGROK_URL;
 
 export const postFile = async (
   files: FileList,
@@ -25,14 +25,14 @@ export const postFile = async (
     }
   });
 
-  // const { data: AiData } = await axiosClient({
-  //   method: "POST",
-  //   baseURL: `${API_AI}/KG/upload-files`,
-  //   data: formData,
-  //   headers: {
-  //     "Content-Type": "multipart/form-data"
-  //   }
-  // });
-  // console.log(AiData);
-  return { data };
+  const { data: AiData } = await axiosClient({
+    method: "POST",
+    baseURL: `${API_AI}/KG/upload-files`,
+    data: formData,
+    headers: {
+      "Content-Type": "multipart/form-data"
+    }
+  });
+
+  return { data, AiData };
 };
